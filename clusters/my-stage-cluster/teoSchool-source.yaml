@@ -7,6 +7,6 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: feature/k8s_stage
+    branch: develop
   url: https://github.com/teolia/teoSchool-david-projet
 
