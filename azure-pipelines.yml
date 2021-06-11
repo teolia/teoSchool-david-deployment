@@ -19,7 +19,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)/terraform-aks-k8s/'
+        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
         backendAzureRmResourceGroupName: 'TFRresourceGroup'
         backendAzureRmStorageAccountName: 'newdavblob'
         backendAzureRmContainerName: 'tfstate'
@@ -30,4 +30,4 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
-        environmentServiceNameAzureRM: 'Essai gratuit(1)(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
+        environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
