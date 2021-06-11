@@ -58,7 +58,7 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
-      condition: eq($(createVar), True)
+      condition: eq(variables.createVar, True)
       inputs:
         provider: 'azurerm'
         command: 'apply'
@@ -68,7 +68,7 @@ stages:
 
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
-      condition: ne($(createVar), True)
+      condition: ne(variables.createVar, True)
       inputs:
         provider: 'azurerm'
         command: 'destroy'
