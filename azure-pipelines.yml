@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-- group: variables-cluster
+  createVar: $[eq(variables['create-cluster'], 'True')]
 
 
 trigger:
@@ -58,7 +58,7 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
-      condition: eq($(create-cluster), True)
+      condition: eq($(createVar), True)
       inputs:
         provider: 'azurerm'
         command: 'apply'
@@ -68,7 +68,7 @@ stages:
 
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
-      condition: ne($(create-cluster), True)
+      condition: ne($(createVar), True)
       inputs:
         provider: 'azurerm'
         command: 'destroy'
