@@ -58,10 +58,19 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
-      condition: eq($(create-cluster), yes)
+      condition: eq($(create-cluster), True)
       inputs:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
         commandOptions: 'out.plan'
+        environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
+
+    - task: TerraformTaskV2@2
+      displayName: Terraform destroy
+      condition: ne($(create-cluster), True)
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8S'
         environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
