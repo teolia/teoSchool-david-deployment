@@ -16,6 +16,13 @@ stages:
   jobs:
   - job: BuildAKSTerraform
     steps:
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: 
+        sshPublicKey: '$(SSH-KEY-PUB)'
+        sshKeySecureFile: 
+      env:
+        SSH-KEY-PUB: $(ssh-key-pub)
     - task: TerraformTaskV2@2
       displayName: Terraform init 
       inputs:
