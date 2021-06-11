@@ -5,8 +5,7 @@
 
 variables:
 - group: variables-cluster
-- name: create-variable
-  value: $[variables.create-cluster]
+
 
 trigger:
 - master
@@ -59,7 +58,7 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
-      condition: eq($(create-variable), yes)
+      condition: eq($(create-cluster), yes)
       inputs:
         provider: 'azurerm'
         command: 'apply'
