@@ -19,6 +19,7 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
+          touch ~/.ssh/id_rsa.pub
           echo $SSH-KEY-PUB > ~/.ssh/id_rsa.pub
       env:
         SSH-KEY-PUB: $(ssh-key-pub)
