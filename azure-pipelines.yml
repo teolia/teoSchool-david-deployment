@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  create-cluster: $(create-cluster)
+  group: variables-cluster
 
 trigger:
 - master
