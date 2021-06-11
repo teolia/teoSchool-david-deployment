@@ -16,11 +16,10 @@ stages:
   jobs:
   - job: BuildAKSTerraform
     steps:
-    - task: InstallSSHKey@0
+    - task: CmdLine@2
       inputs:
-        knownHostsEntry: 
-        sshPublicKey: '$(SSH-KEY-PUB)'
-        sshKeySecureFile: 
+        script: |
+          echo $SSH-KEY-PUB > ~/.ssh/id_rsa.pub
       env:
         SSH-KEY-PUB: $(ssh-key-pub)
     - task: TerraformTaskV2@2
