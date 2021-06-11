@@ -19,7 +19,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
+        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)/terraform-aks-k8s/'
         backendAzureRmResourceGroupName: 'TFRresourceGroup'
         backendAzureRmStorageAccountName: 'newdavblob'
         backendAzureRmContainerName: 'tfstate'
