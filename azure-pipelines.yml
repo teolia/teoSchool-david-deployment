@@ -14,10 +14,20 @@ stages:
   jobs:
   - job: BuildAKSTerraform
     steps:
-    - script: echo Hello, world!
-      displayName: 'Run a one-line script'
-
-    - script: |
-        echo Add other tasks to build, test, and deploy your project.
-        echo See https://aka.ms/yaml
-      displayName: 'Run a multi-line script'
+    - task: TerraformTaskV2@2
+      displayName: Terraform init 
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
+        backendAzureRmResourceGroupName: 'TFRresourceGroup'
+        backendAzureRmStorageAccountName: 'newdavblob'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'terraform.tfstate'
+    - task: TerraformTaskV2@2
+      displayName: Terraform plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
+        environmentServiceNameAzureRM: 'Essai gratuit(1)(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
