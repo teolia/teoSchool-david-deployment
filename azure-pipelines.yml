@@ -31,3 +31,11 @@ stages:
         provider: 'azurerm'
         command: 'validate'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
+    - task: TerraformTaskV2@2
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
+      env:
+        TF_VAR_client_id:$(System.DefaultWorkingDirectory)
+        TF_VAR_client_secret:$(System.DefaultWorkingDirectory)
