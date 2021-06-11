@@ -4,7 +4,9 @@
 # https://aka.ms/yaml
 
 variables:
-  group: variables-cluster
+- group: variables-cluster
+- name: create-variable
+  value: $[variables.create-cluster]
 
 trigger:
 - master
@@ -57,7 +59,7 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
-      condition: eq(variables.create-cluster, yes)
+      condition: eq($(create-variable), yes)
       inputs:
         provider: 'azurerm'
         command: 'apply'
