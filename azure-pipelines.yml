@@ -9,6 +9,8 @@ variables:
   value: $[eq(variables['create-cluster'], 'True')]
 - name: installVar
   value: $[eq(variables['install-cluster'], 'True')]
+- name: deleteVar
+  value: $[eq(variables['delete-cluster'], 'True')]
 
 
 trigger:
@@ -64,6 +66,7 @@ stages:
     
     - task: TerraformTaskV2@2
       displayName: Terraform apply
+      name: terraformApply
       condition: eq(variables.createVar, True)
       inputs:
         provider: 'azurerm'
@@ -73,14 +76,35 @@ stages:
         environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
     - task: AzureCLI@2
       displayName: Installing flux v2
-      condition: eq(variables.createVar, True)
+      condition: eq(variables.installVar, True)
       inputs:
         azureSubscription: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
+        inlineScript: |
+          set -e
+
+          CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
+          RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
+
+          echo "installing fluxctl"
+          sudo snap install fluxctl --classic
+          
+          echo "acquiring credentials for cluster"
+          az aks get-credentials -n $CLUSTER_NAME -g $RESOURCE_GROUP_NAME
+
+          echo "ensuring flux namespace exists"
+          kubectl apply -f k8s/flux.yml
+
+          echo "installing flux. adding fluxcd helm repo"
+          helm repo add fluxcd https://charts.fluxcd.io
+
+          echo "installing flux. installing the main operator"
+
+
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
-      condition: ne(variables.createVar, True)
+      condition: eq(variables.deleteVar, True)
       inputs:
         provider: 'azurerm'
         command: 'destroy'
