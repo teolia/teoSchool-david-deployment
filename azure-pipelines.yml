@@ -6,7 +6,7 @@
 variables:
 - group: variables-cluster
 - name: createVar
-  value: $[eq(variables.create-cluster, 'True')]
+  value: $[eq(variables['create-cluster'], 'True')]
 
 
 trigger:
