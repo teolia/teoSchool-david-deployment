@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  createVar: $[eq($(create-cluster), True)]
+  createVar: $[eq(variables['create-cluster'], 'True')]
 
 
 trigger:
