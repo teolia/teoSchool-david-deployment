@@ -7,6 +7,8 @@ variables:
 - group: variables-cluster
 - name: createVar
   value: $[eq(variables['create-cluster'], 'True')]
+- name: installVar
+  value: $[eq(variables['install-cluster'], 'True')]
 
 
 trigger:
@@ -27,9 +29,10 @@ stages:
         sshPublicKey: '$(myPubKey)'
         sshKeySecureFile: 'id_rsa'
 
-    - task: CmdLine@2
+    - task: HelmInstaller@0
       inputs:
-        script: 'ls -alh $(System.DefaultWorkingDirectory)'
+        helmVersion: '2.14.1'
+        installKubectl: true
     - task: TerraformTaskV2@2
       displayName: Terraform init 
       inputs:
@@ -68,7 +71,13 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
         commandOptions: 'out.plan'
         environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
-
+    - task: AzureCLI@2
+      displayName: Installing flux v2
+      condition: eq(variables.createVar, True)
+      inputs:
+        azureSubscription: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
       condition: ne(variables.createVar, True)
