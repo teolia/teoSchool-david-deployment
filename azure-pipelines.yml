@@ -75,5 +75,5 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8S'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
         environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
