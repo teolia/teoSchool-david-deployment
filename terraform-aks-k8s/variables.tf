@@ -5,8 +5,8 @@ variable "agent_count" {
   default = 2
 }
 
-variable "ssh_public_key" {
-  default = "~/.ssh/id_rsa.pub"
+variable "myPubKey" {
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXLeHgA3bjziYEkuxYPCEAmbnbus/olW8OCLVhzkAhcZ5aYtWN9A6hhu53WVpnkGz5J2WGxorQaTp9lLk3Ms8y+SvdHP4wo1PxgpJtV0KAWpjNxe3if32fxRvvIZ8rCqow2lML3a03A5NdueJNm/lsR3dP17MG7iP+MIY9K9pb5lEkOLrzaslCx+fImp2CrHBmx1JL/SLdpDOExLi5GptVxbCKoEumGRo7oqDE7w8GNqsRzH9/i9LsEFQSFZgEJ0x0h8lk2latJLgWTh4jor6DVzatYA7r3mdj3BlkIDKPsHYHvLPfpLVxRPt9m0W9t0WIL3XDYk3aKNjxf6G8odqN cloud_user@davidespinel1c.mylabserver.com"
 }
 
 variable "dns_prefix" {
