@@ -11,6 +11,14 @@ output "client_ca_certificate" {
   value = azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate
 }
 
+output "cluster_name" {
+  value = azurerm_kubernetes_cluster.k8s.name
+}
+
+output "resource_group_name" {
+  value = azurerm_kubernetes_cluster.k8s.resource_group_name
+}
+
 output "cluster_username" {
   value = azurerm_kubernetes_cluster.k8s.kube_config.0.username
 }
