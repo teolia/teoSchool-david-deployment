@@ -105,8 +105,8 @@ stages:
 
           echo "Bootstrap Flux components"
           flux bootstrap github \
-            --owner=$(GITHUB_USER) \
-            --repository=$(GITHUB_REPO) \
+            --owner=$GITHUB_USER \
+            --repository=$GITHUB_REPO \
             --branch=master \
             --path=./clusters/$CLUSTER_NAME
 
