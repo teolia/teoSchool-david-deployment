@@ -85,9 +85,6 @@ stages:
 
           CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
           RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
-
-          echo "- installing fluxctl"
-          sudo snap install fluxctl --classic
           
           echo "- acquiring credentials for cluster"
           az aks get-credentials -n $CLUSTER_NAME -g $RESOURCE_GROUP_NAME
