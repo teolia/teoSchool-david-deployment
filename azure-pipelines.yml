@@ -128,7 +128,9 @@ stages:
             --export > ./clusters/$CLUSTER_NAME/prod-kustomization.yaml
 
           echo "pushing changes to git repo"
-          git add -A && git commit -m "Add podinfo GitRepository"
+          git config --global user.email "dafespinelsa@unal.edu.co"
+          git config --global user.name "daespinel"
+          git add -A && git commit -m "Add source and kustomization GitRepository"
           git push
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
