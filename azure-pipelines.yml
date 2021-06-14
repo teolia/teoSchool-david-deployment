@@ -132,9 +132,9 @@ stages:
           git add -A && git commit -m "Add podinfo GitRepository"
           git push
       env:
-        GITHUB-TOKEN: $(GITHUB-TOKEN)
-        GITHUB-USER: $(GITHUB-USER)
-        GITHUB-REPO: $(GITHUB-REPO)
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+        GITHUB_USER: $(GITHUB_USER)
+        GITHUB_REPO: $(GITHUB_REPO)
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
       condition: eq(variables.deleteVar, True)
