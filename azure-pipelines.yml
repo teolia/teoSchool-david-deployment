@@ -86,10 +86,7 @@ stages:
 
           CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
           RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
-          GITHUB-TOKEN=$(GITHUB-TOKEN)
-          GITHUB-USER=$(GITHUB-USER)
-          GITHUB-REPO=$(GITHUB-REPO)
-
+          
           echo $GITHUB-TOKEN
 
           echo "installing fluxctl"
@@ -134,7 +131,10 @@ stages:
           echo "pushing changes to git repo"
           git add -A && git commit -m "Add podinfo GitRepository"
           git push
-
+      env:
+        GITHUB-TOKEN: $(GITHUB-TOKEN)
+        GITHUB-USER: $(GITHUB-USER)
+        GITHUB-REPO: $(GITHUB-REPO)
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
       condition: eq(variables.deleteVar, True)
