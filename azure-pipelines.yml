@@ -109,7 +109,7 @@ stages:
             --branch=master \
             --path=./clusters/$CLUSTER_NAME
 
-          ls -alh ./cluster/k8stest/
+          ls -alh ./clusters/k8stest/
 
           echo "- Creating flux source"
           flux create source git podinfo \
