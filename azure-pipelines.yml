@@ -127,11 +127,16 @@ stages:
             --interval=5m \
             --export > ./clusters/$CLUSTER_NAME/prod-kustomization.yaml
 
-          echo "pushing changes to git repo"
+          echo "- pushing changes to git repo"
           git config --global user.email "dafespinelsa@unal.edu.co"
           git config --global user.name "daespinel"
+          if [[ `git status --porcelain` ]]; then
+          echo '- changes found'
           git add -A && git commit -m "Add source and kustomization GitRepository"
           git push
+          else
+          echo '- No changes in folder'
+          fi
 
           echo '- Installing monitoring namespaces'
           kubectl apply -f k8s/monitoring-namespaces.yaml
