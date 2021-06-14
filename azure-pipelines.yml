@@ -87,7 +87,7 @@ stages:
           CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
           RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
           
-          echo $GITHUB-TOKEN
+          echo $GITHUB_TOKEN
 
           echo "installing fluxctl"
           sudo snap install fluxctl --classic
