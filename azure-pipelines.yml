@@ -13,8 +13,7 @@ variables:
   value: $[eq(variables['delete-cluster'], 'True')]
 
 
-trigger:
-- master
+trigger: none
 
 pool:
   vmImage: ubuntu-latest
@@ -86,47 +85,47 @@ stages:
 
           CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
           RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
-          
-          echo $GITHUB_TOKEN
 
-          echo "installing fluxctl"
+          echo "- installing fluxctl"
           sudo snap install fluxctl --classic
           
-          echo "acquiring credentials for cluster"
+          echo "- acquiring credentials for cluster"
           az aks get-credentials -n $CLUSTER_NAME -g $RESOURCE_GROUP_NAME
 
-          echo "installing fluxcd in agent"
+          echo "- installing fluxcd in agent"
           curl -s https://fluxcd.io/install.sh | sudo bash
 
-          echo "Validating flux pre-requisites"
+          echo "- Validating flux pre-requisites"
           flux check --pre
 
-          echo "pulling git repo"
+          echo "- pulling git repo"
           git clone $(deployment-repo)
           cd teoSchool-david-deployment
 
-          echo "Bootstrap Flux components"
+          echo "- Bootstrap Flux components"
           flux bootstrap github \
             --owner=$GITHUB_USER \
             --repository=$GITHUB_REPO \
             --branch=master \
             --path=./clusters/$CLUSTER_NAME
 
-          echo "Creating flux source"
+          ls -alh ./cluster/k8stest/
+
+          echo "- Creating flux source"
           flux create source git podinfo \
             --url=https://github.com/daespinel/teoschooldavid \
             --branch=main \
             --interval=30s \
             --export > ./clusters/$CLUSTER_NAME/prod-source.yaml
         
-          echo "Creating flux kustomization"
+          echo "- Creating flux kustomization"
           flux create kustomization podinfo \
             --source=podinfo \
             --path="./kustomize" \
             --prune=true \
             --validation=client \
             --interval=5m \
-            --export > ./clusters/$CLUSTER-NAME/prod-kustomization.yaml
+            --export > ./clusters/$CLUSTER_NAME/prod-kustomization.yaml
 
           echo "pushing changes to git repo"
           git add -A && git commit -m "Add podinfo GitRepository"
