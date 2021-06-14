@@ -93,14 +93,42 @@ stages:
           echo "acquiring credentials for cluster"
           az aks get-credentials -n $CLUSTER_NAME -g $RESOURCE_GROUP_NAME
 
-          echo "ensuring flux namespace exists"
-          kubectl apply -f k8s/flux.yml
+          echo "installing fluxcd in agent"
+          curl -s https://fluxcd.io/install.sh | sudo bash
 
-          echo "installing flux. adding fluxcd helm repo"
-          helm repo add fluxcd https://charts.fluxcd.io
+          echo "Validating flux pre-requisites"
+          flux check --pre
 
-          echo "installing flux. installing the main operator"
+          echo "pulling git repo"
+          git clone $(deployment-repo)
+          cd teoSchool-david-deployment
 
+          echo "Bootstrap Flux components"
+          flux bootstrap github \
+            --owner=$(GITHUB_USER) \
+            --repository=$(GITHUB_REPO) \
+            --branch=master \
+            --path=./clusters/$CLUSTER_NAME
+
+          echo "Creating flux source"
+          flux create source git podinfo \
+            --url=https://github.com/daespinel/teoschooldavid \
+            --branch=main \
+            --interval=30s \
+            --export > ./clusters/$CLUSTER_NAME/prod-source.yaml
+        
+          echo "Creating flux kustomization"
+          flux create kustomization podinfo \
+            --source=podinfo \
+            --path="./kustomize" \
+            --prune=true \
+            --validation=client \
+            --interval=5m \
+            --export > ./clusters/$CLUSTER-NAME/prod-kustomization.yaml
+
+          echo "pushing changes to git repo"
+          git add -A && git commit -m "Add podinfo GitRepository"
+          git push
 
     - task: TerraformTaskV2@2
       displayName: Terraform destroy
