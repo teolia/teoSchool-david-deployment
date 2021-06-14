@@ -133,14 +133,17 @@ stages:
           git add -A && git commit -m "Add source and kustomization GitRepository"
           git push
 
-          echo '- Installing grafana'
+          echo '- Installing monitoring namespaces'
           kubectl apply -f k8s/monitoring-namespaces.yaml
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm install grafana -f grafana-values.yml grafana/grafana --version 6.9.1 --namespace grafana
 
           echo '- Installing prometheus'
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm install prometheus -f prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace prometheus
+
+          echo '- Installing grafana'
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm install grafana -f grafana-values.yml grafana/grafana --version 6.9.1 --namespace grafana
+
 
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
