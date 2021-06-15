@@ -1,5 +1,11 @@
 admin:
   password: password
+
 service:
   type: NodePort
   nodePort: 31000
+
+sidecar:
+  datasources:
+    enabled: true
+    label: grafana_datasource
