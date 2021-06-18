@@ -1,0 +1,45 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+  namespace: logging
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data
+  namespace: logging
+spec:
+  capacity: 
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  local:
+    path: /mnt/disk/vol1
+  nodeAffinity: 
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname 
+          operator: In 
+          values: 
+          - davidespinel1c.mylabserver.com
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: persistent-volume-claim
+#  namespace: logging
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  storageClassName: "standard"
+#  resources:
+#    requests:
+#      storage: 2Gi
