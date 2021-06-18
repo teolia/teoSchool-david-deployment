@@ -8,7 +8,7 @@ sidecar:
 
 service:
   type: LoadBalancer
-  port: 80
+  targetPort: 80
 
 dashboardProviders:
   dashboardproviders.yaml:
