@@ -7,8 +7,8 @@ sidecar:
     label: grafana_datasource
 
 service:
-  type: NodePort
-  nodePort: 8081
+  type: LoadBalancer
+  port: 80
 
 dashboardProviders:
   dashboardproviders.yaml:
