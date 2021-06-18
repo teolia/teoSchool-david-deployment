@@ -74,7 +74,7 @@ stages:
         commandOptions: 'out.plan'
         environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
     - task: AzureCLI@2
-      displayName: Installing flux v2
+      displayName: Installing tools
       condition: eq(variables.installVar, True)
       inputs:
         azureSubscription: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
@@ -140,11 +140,11 @@ stages:
 
           echo '- Installing prometheus'
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm install prometheus -f prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace kube-monitoring
+          helm install prometheus -f monitoring/prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace kube-monitoring
 
           echo '- Installing grafana'
           helm repo add grafana https://grafana.github.io/helm-charts
-          helm install grafana -f grafana-values.yml grafana/grafana --version 6.9.1 --namespace kube-monitoring
+          helm install grafana -f monitoring/grafana-values.yml grafana/grafana --version 6.9.1 --namespace kube-monitoring
 
           echo '- Installing logging namespaces'
           kubectl apply -f logging/kube-logging.yml
