@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name:  monitoring
+  name:  kube-monitoring
 
 
 ---
@@ -10,7 +10,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus-grafana-datasource
-  namespace: grafana
+  namespace: kube-monitoring
   labels:
     grafana_datasource: '1'
 data:

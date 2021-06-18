@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kibana
-  namespace: logging
+  namespace: kube-logging
   labels:
     app: kibana
 spec:
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kibana-ext
-  namespace: logging
+  namespace: kube-logging
   labels:
     app: kibana
 spec:
@@ -32,7 +32,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kibana
-  namespace: logging
+  namespace: kube-logging
   labels:
     app: kibana
 spec:

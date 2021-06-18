@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fluentd
-  namespace: logging
+  namespace: kube-logging
   labels:
     app: fluentd
 
@@ -38,7 +38,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: fluentd
-  namespace: logging
+  namespace: kube-logging
 
 ---
 
@@ -46,7 +46,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd
-  namespace: logging
+  namespace: kube-logging
   labels:
     app: fluentd
 spec:
