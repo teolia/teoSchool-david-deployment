@@ -136,17 +136,33 @@ stages:
           fi
 
           echo '- Installing monitoring namespaces'
-          kubectl apply -f k8s/monitoring-namespaces.yaml
+          kubectl apply -f monitoring/monitoring-namespaces.yaml
 
           echo '- Installing prometheus'
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm install prometheus -f prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace monitoring
+          helm install prometheus -f prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace kube-monitoring
 
           echo '- Installing grafana'
           helm repo add grafana https://grafana.github.io/helm-charts
-          helm install grafana -f grafana-values.yml grafana/grafana --version 6.9.1 --namespace monitoring
+          helm install grafana -f grafana-values.yml grafana/grafana --version 6.9.1 --namespace kube-monitoring
 
+          echo '- Installing logging namespaces'
+          kubectl apply -f logging/kube-logging.yml
 
+          echo '- Creating PersistentVolume'
+          kubectl apply -f logging/data-volume-claim.yml
+
+          echo '- Creating Elasticsearch headless service'
+          kubectl apply -f logging/elasticsearch-service.yml
+
+          echo '- Creating Elasticsearch statefulset'
+          kubectl apply -f logging/elasticsearch-statefulset.yml
+
+          echo '- Creating Kibana service and deployment'
+          kubectl apply -f logging/kibana.yml
+
+          echo '- Creating fluentd daemonset'
+          kubectl apply -f logging/fluentd.yml
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
         GITHUB_USER: $(GITHUB_USER)
