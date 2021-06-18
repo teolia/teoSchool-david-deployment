@@ -24,7 +24,7 @@ spec:
   selector:
     app: kibana
   ports:
-    - targetPort: 5601
+  - targetPort: 5601
 
 ---
 apiVersion: apps/v1
