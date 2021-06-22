@@ -109,15 +109,15 @@ stages:
           ls -alh ./clusters/k8stest/
 
           echo "- Creating flux source"
-          flux create source git podinfo \
+          flux create source git prod \
             --url=https://github.com/daespinel/teoschooldavid \
             --branch=main \
             --interval=30s \
             --export > ./clusters/$CLUSTER_NAME/prod-source.yaml
         
           echo "- Creating flux kustomization"
-          flux create kustomization podinfo \
-            --source=podinfo \
+          flux create kustomization prod-deployment \
+            --source=prod \
             --path="./kustomize" \
             --prune=true \
             --validation=client \
