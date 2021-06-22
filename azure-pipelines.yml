@@ -99,6 +99,9 @@ stages:
           git clone $(deployment-repo)
           cd teoSchool-david-deployment
 
+          echo "- Installing docker app namespace"
+          kubectl apply -f docker-app/dockercoins-namespace.yaml
+
           echo "- Bootstrap Flux components"
           flux bootstrap github \
             --owner=$GITHUB_USER \
