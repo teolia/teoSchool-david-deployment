@@ -8,5 +8,5 @@ spec:
   interval: 30s
   ref:
     branch: staging
-  url: https://github.com/teolia/teoschooldavid
+  url: https://github.com/daespinel/teoschooldavid
 
