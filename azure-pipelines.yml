@@ -82,42 +82,42 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           set -e
-
+          
           CLUSTER_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.cluster_name.value' -r)
           RESOURCE_GROUP_NAME=$(cat $(terraformApply.jsonOutputVariablesPath) | jq '.resource_group_name.value' -r)
           
           echo "- acquiring credentials for cluster"
           az aks get-credentials -n $CLUSTER_NAME -g $RESOURCE_GROUP_NAME
-
+          
           echo "- installing fluxcd in agent"
           curl -s https://fluxcd.io/install.sh | sudo bash
-
+          
           echo "- Validating flux pre-requisites"
           flux check --pre
-
+          
           echo "- pulling git repo"
           git clone $(deployment-repo)
           cd teoSchool-david-deployment
-
+          
           echo "- Installing docker app namespace"
           kubectl apply -f docker-app/dockercoins-namespace.yaml
-
+          
           echo "- Bootstrap Flux components"
           flux bootstrap github \
             --owner=$GITHUB_USER \
             --repository=$GITHUB_REPO \
             --branch=master \
             --path=./clusters/$CLUSTER_NAME
-
+          
           ls -alh ./clusters/k8stest/
-
+          
           echo "- Creating flux source"
           flux create source git prod \
             --url=https://github.com/daespinel/teoschooldavid \
             --branch=main \
             --interval=30s \
             --export > ./clusters/$CLUSTER_NAME/prod-source.yaml
-        
+          
           echo "- Creating flux kustomization"
           flux create kustomization prod-deployment \
             --source=prod \
@@ -126,7 +126,7 @@ stages:
             --validation=client \
             --interval=5m \
             --export > ./clusters/$CLUSTER_NAME/prod-kustomization.yaml
-
+          
           echo "- pushing changes to git repo"
           git config --global user.email "dafespinelsa@unal.edu.co"
           git config --global user.name "daespinel"
@@ -137,33 +137,33 @@ stages:
           else
           echo '* No changes in folder'
           fi
-
+          
           echo '- Installing monitoring namespaces'
           kubectl apply -f monitoring/monitoring-namespaces.yaml
-
+          
           echo '- Installing prometheus'
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm upgrade -i prometheus -f monitoring/prometheus-values.yml prometheus-community/prometheus --version 14.1.0 --namespace kube-monitoring
-
+          
           echo '- Installing grafana'
           helm repo add grafana https://grafana.github.io/helm-charts
           helm upgrade -i grafana -f monitoring/grafana-values.yml grafana/grafana --version 6.9.1 --namespace kube-monitoring
-
+          
           echo '- Installing logging namespaces'
           kubectl apply -f logging/kube-logging.yml
-
+          
           echo '- Creating PersistentVolume'
           kubectl apply -f logging/data-volume-claim.yml
-
+          
           echo '- Creating Elasticsearch headless service'
           kubectl apply -f logging/elasticsearch-service.yml
-
+          
           echo '- Creating Elasticsearch statefulset'
           kubectl apply -f logging/elasticsearch-statefulset.yml
-
+          
           echo '- Creating Kibana service and deployment'
           kubectl apply -f logging/kibana.yml
-
+          
           echo '- Creating fluentd daemonset'
           kubectl apply -f logging/fluentd.yml
       env:
