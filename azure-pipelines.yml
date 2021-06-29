@@ -40,7 +40,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
-        backendServiceArm: 'Essai gratuit'
+        backendServiceArm: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
         backendAzureRmResourceGroupName: 'TFRresourceGroup'
         backendAzureRmStorageAccountName: 'newdavblob'
         backendAzureRmContainerName: 'tfstate'
@@ -58,7 +58,7 @@ stages:
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
         commandOptions: '-out out.plan'
-        environmentServiceNameAzureRM: 'Essai gratuit'
+        environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
       env:
         TF_VAR_client_id: $(service-principal-appid)
         TF_VAR_client_secret: $(service-principal-password)
@@ -72,12 +72,12 @@ stages:
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
         commandOptions: 'out.plan'
-        environmentServiceNameAzureRM: 'Essai gratuit'
+        environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
     - task: AzureCLI@2
       displayName: Installing tools
       condition: eq(variables.installVar, True)
       inputs:
-        azureSubscription: 'Essai gratuit'
+        azureSubscription: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
@@ -177,7 +177,7 @@ stages:
         provider: 'azurerm'
         command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-aks-k8s/'
-        environmentServiceNameAzureRM: 'Essai gratuit'
+        environmentServiceNameAzureRM: 'Essai gratuit(e66d562c-9e74-47b7-a847-c6d192e8b54b)'
       env:
         TF_VAR_client_id: $(service-principal-appid)
         TF_VAR_client_secret: $(service-principal-password)
