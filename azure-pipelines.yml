@@ -100,7 +100,7 @@ stages:
           cd teoSchool-david-deployment
           
           echo "- Installing docker app namespace"
-          kubectl apply -f docker-app/dockercoins-namespace.yaml
+          kubectl apply -f docker-app/dockercoins-namespace.yml
           
           echo "- Bootstrap Flux components"
           flux bootstrap github \
